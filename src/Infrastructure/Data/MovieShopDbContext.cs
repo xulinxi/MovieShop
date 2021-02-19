@@ -20,7 +20,6 @@ namespace Infrastructure.Data
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
 
-
         // Many DbSets, they are represented as properties
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,7 +38,6 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Purchase>(ConfigurePurchase);
             modelBuilder.Entity<Favorite>(ConfigureFavorites);
             modelBuilder.Entity<Review>(ConfigureReview);
-
         }
 
         private void ConfigureTrailer(EntityTypeBuilder<Trailer> builder)
@@ -78,7 +76,7 @@ namespace Infrastructure.Data
         private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> builder)
         {
             builder.ToTable("MovieCast");
-            builder.HasKey(mc => new { mc.CastId, mc.MovieId, mc.Character });
+            builder.HasKey(mc => new {mc.CastId, mc.MovieId, mc.Character});
             builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
             builder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);
         }
@@ -103,24 +101,26 @@ namespace Infrastructure.Data
             builder.Property(u => u.Salt).HasMaxLength(1024);
             builder.Property(u => u.IsLocked).HasDefaultValue(false);
         }
+
         private void ConfigurePurchase(EntityTypeBuilder<Purchase> builder)
         {
             builder.ToTable("Purchase");
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Property(p => p.PurchaseNumber).ValueGeneratedOnAdd();
-            builder.HasIndex(p => new { p.UserId, p.MovieId }).IsUnique();
+            builder.HasIndex(p => new {p.UserId, p.MovieId}).IsUnique();
         }
 
         private void ConfigureFavorites(EntityTypeBuilder<Favorite> builder)
         {
             builder.ToTable("Favorite");
-            builder.HasKey(f => new { f.MovieId, f.UserId });
+            builder.HasKey(f => new {f.MovieId, f.UserId});
         }
+
         private void ConfigureReview(EntityTypeBuilder<Review> builder)
         {
             builder.ToTable("Review");
-            builder.HasKey(r => new { r.MovieId, r.UserId });
+            builder.HasKey(r => new {r.MovieId, r.UserId});
             builder.Property(r => r.ReviewText).HasMaxLength(20000);
             builder.Property(r => r.Rating).HasColumnType("decimal(3, 2)");
         }

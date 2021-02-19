@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Helpers;
-using ApplicationCore.Models.Request;
-using ApplicationCore.Models.Response;
+using ApplicationCore.Models;
 
 namespace ApplicationCore.ServiceInterfaces
 {
