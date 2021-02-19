@@ -79,7 +79,7 @@ namespace Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public virtual async Task<PaginatedList<T>> GetPagedData(int page, int pageSize,
+        public virtual async Task<PaginatedList<T>> GetPagedData(int page = 1, int pageSize = 25,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderedQuery
                 = null, Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes)
         {

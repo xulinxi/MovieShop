@@ -20,15 +20,18 @@ namespace Infrastructure.Services
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IAsyncRepository<Favorite> _favoriteRepository;
         private readonly IAsyncRepository<Review> _reviewRepository;
+        private readonly IAsyncRepository<Genre> _genreRepository;
 
         public MovieService(IMovieRepository movieRepository, IMapper mapper, IPurchaseRepository purchaseRepository,
-            IAsyncRepository<Favorite> favoriteRepository, IAsyncRepository<Review> reviewRepository)
+            IAsyncRepository<Favorite> favoriteRepository, IAsyncRepository<Review> reviewRepository,
+            IAsyncRepository<Genre> genreRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
             _purchaseRepository = purchaseRepository;
             _favoriteRepository = favoriteRepository;
             _reviewRepository = reviewRepository;
+            _genreRepository = genreRepository;
         }
 
         public async Task<PagedResultSet<MovieResponseModel>> GetMoviesByPagination(
@@ -60,6 +63,16 @@ namespace Infrastructure.Services
         public async Task<PaginatedList<MovieResponseModel>> GetAllPurchasesByMovieId(int movieId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<PaginatedList<MovieResponseModel>> GetMoviesByGenre(int genreId, int pageSize = 25,
+            int page = 1)
+        {
+            Expression<Func<Genre, bool>> filterExpression = genre => genre.Id == genreId;
+
+            var movies = await _genreRepository.GetPagedData(page, pageSize, null,
+                filterExpression, g => g.Movies);
+            return null;
         }
 
         public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)
@@ -103,13 +116,13 @@ namespace Infrastructure.Services
             return response;
         }
 
-        public async Task<IEnumerable<MovieResponseModel>> GetMoviesByGenre(int genreId)
-        {
-            var movies = await _movieRepository.GetMoviesByGenre(genreId);
-            if (!movies.Any()) throw new NotFoundException("Movies for genre", genreId);
-            var response = _mapper.Map<IEnumerable<MovieResponseModel>>(movies);
-            return response;
-        }
+        //public async Task<IEnumerable<MovieResponseModel>> GetMoviesByGenre(int genreId)
+        //{
+        //    var movies = await _movieRepository.GetMoviesByGenre(genreId);
+        //    if (!movies.Any()) throw new NotFoundException("Movies for genre", genreId);
+        //    var response = _mapper.Map<IEnumerable<MovieResponseModel>>(movies);
+        //    return response;
+        //}
 
         public async Task<MovieDetailsResponseModel> CreateMovie(MovieCreateRequest movieCreateRequest)
         {
