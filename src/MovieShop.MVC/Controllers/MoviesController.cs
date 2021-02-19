@@ -15,15 +15,18 @@ namespace MovieShop.MVC.Controllers
         {
             _movieService = movieService;
         }
+
         public IActionResult Index()
         {
             return View();
         }
-        public async Task<IActionResult> Genre(int id)
+
+        public async Task<IActionResult> Genre(int id, int pageSize = 25, int page = 1)
         {
-            var movies = await _movieService.GetMoviesByGenre(id);
+            var movies = await _movieService.GetMoviesByGenre(id, pageSize, page);
             return View("~/Views/Home/Index.cshtml", movies);
         }
+
         public async Task<IActionResult> Details(int id)
         {
             var movie = await _movieService.GetMovieAsync(id);

@@ -60,20 +60,19 @@ namespace Infrastructure.Services
             return purchasedMovies;
         }
 
-        public async Task<PaginatedList<MovieResponseModel>> GetAllPurchasesByMovieId(int movieId)
+        public async Task<PagedResultSet<MovieResponseModel>> GetAllPurchasesByMovieId(int movieId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<PaginatedList<MovieResponseModel>> GetMoviesByGenre(int genreId, int pageSize = 25,
-            int page = 1)
+        public async Task<PagedResultSet<MovieResponseModel>> GetMoviesByGenre(int genreId, int pageSize = 25, int page = 1)
         {
-            Expression<Func<Genre, bool>> filterExpression = genre => genre.Id == genreId;
-
-            var movies = await _genreRepository.GetPagedData(page, pageSize, null,
-                filterExpression, g => g.Movies);
-            var selectMovies = movies.SelectMany(m => m.Movies);
-            return null;
+            var pagedMovies = await _movieRepository.GetMoviesByGenre(genreId, pageSize, page);
+            var movies =
+                new PagedResultSet<MovieResponseModel>(_mapper.Map<List<MovieResponseModel>>(pagedMovies),
+                    pagedMovies.PageIndex,
+                    pageSize, pagedMovies.TotalCount);
+            return movies;
         }
 
         public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)
