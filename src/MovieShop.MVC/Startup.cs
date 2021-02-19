@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Infrastructure.Data;
 using Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -32,12 +27,16 @@ namespace MovieShop.MVC
                     .GetConnectionString("MovieShopDbConnection")));
             services.AddAutoMapper(typeof(Startup), typeof(MovieShopMappingProfile));
             ConfigureDependencyInjection(services);
+            services.AddMemoryCache();
+            services.AddHttpContextAccessor();
+
         }
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
             services.AddRepositories();
             services.AddServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
