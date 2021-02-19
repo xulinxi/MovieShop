@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure.Data;
+using Infrastructure.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieShop.MVC
 {
@@ -24,6 +27,17 @@ namespace MovieShop.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<MovieShopDbContext>(options =>
+                options.UseSqlServer(Configuration
+                    .GetConnectionString("MovieShopDbConnection")));
+            services.AddAutoMapper(typeof(Startup), typeof(MovieShopMappingProfile));
+            ConfigureDependencyInjection(services);
+        }
+
+        private void ConfigureDependencyInjection(IServiceCollection services)
+        {
+            services.AddRepositories();
+            services.AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +53,7 @@ namespace MovieShop.MVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
