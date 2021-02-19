@@ -4,7 +4,7 @@ using MovieShop.MVC.Models;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Infrastructure.Data;
+using ApplicationCore.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace MovieShop.MVC.Controllers
@@ -12,16 +12,16 @@ namespace MovieShop.MVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly MovieShopDbContext _dbContext;
-
-        public HomeController(ILogger<HomeController> logger, MovieShopDbContext dbContext)
+        private readonly IMovieService _movieService;
+        public HomeController(ILogger<HomeController> logger, IMovieService movieService)
         {
             _logger = logger;
-            _dbContext = dbContext;
+            _movieService = movieService;
         }
 
         public async Task<IActionResult> Index()
         {
+            var reviews = await _movieService.GetReviewsForMovie(3);
             return View();
         }
 

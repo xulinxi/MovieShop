@@ -19,14 +19,16 @@ namespace Infrastructure.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IPurchaseRepository _purchaseRepository;
         private readonly IAsyncRepository<Favorite> _favoriteRepository;
+        private readonly IAsyncRepository<Review> _reviewRepository;
 
         public MovieService(IMovieRepository movieRepository, IMapper mapper, IPurchaseRepository purchaseRepository,
-            IAsyncRepository<Favorite> favoriteRepository)
+            IAsyncRepository<Favorite> favoriteRepository, IAsyncRepository<Review> reviewRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
             _purchaseRepository = purchaseRepository;
             _favoriteRepository = favoriteRepository;
+            _reviewRepository = reviewRepository;
         }
 
         public async Task<PagedResultSet<MovieResponseModel>> GetMoviesByPagination(
@@ -72,7 +74,11 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<ReviewMovieResponseModel>> GetReviewsForMovie(int id)
         {
-            var reviews = await _movieRepository.GetMovieReviews(id);
+            Expression<Func<Review, bool>> filterExpression = review => review.MovieId == id;
+
+            var reviews = await _reviewRepository.GetPagedData(1, 25, rev => rev.OrderByDescending(r => r.Rating),
+                filterExpression, review => review.Movie);
+
             var response = _mapper.Map<IEnumerable<ReviewMovieResponseModel>>(reviews);
             return response;
         }

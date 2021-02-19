@@ -24,6 +24,6 @@ namespace ApplicationCore.RepositoryInterfaces
 
         Task<PaginatedList<T>> GetPagedData(int pageIndex, int pageSize,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderedQuery = null,
-            Expression<Func<T, bool>> filter = null);
+            Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes);
     }
 }

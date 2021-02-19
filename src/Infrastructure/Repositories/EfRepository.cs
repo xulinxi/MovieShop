@@ -81,10 +81,10 @@ namespace Infrastructure.Repositories
 
         public virtual async Task<PaginatedList<T>> GetPagedData(int page, int pageSize,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderedQuery
-                = null, Expression<Func<T, bool>> filter = null)
+                = null, Expression<Func<T, bool>> filter = null, params Expression<Func<T, object>>[] includes)
         {
             var pagedList =
-                await PaginatedList<T>.GetPaged(_dbContext.Set<T>(), page, pageSize, orderedQuery, filter);
+                await PaginatedList<T>.GetPaged(_dbContext.Set<T>(), page, pageSize, orderedQuery, filter, includes);
             return pagedList;
         }
     }
