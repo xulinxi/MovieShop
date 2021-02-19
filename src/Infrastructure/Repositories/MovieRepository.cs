@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using ApplicationCore.RepositoryInterfaces;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -19,12 +21,14 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId)
         {
-            throw new System.NotImplementedException();
+            var movies = await _dbContext.Genres.Where(g => g.Id == genreId).SelectMany(g => g.Movies).ToListAsync();
+            return movies;
         }
 
         public async Task<IEnumerable<Movie>> GetHighestGrossingMovies()
         {
-            throw new System.NotImplementedException();
+            var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(24).ToListAsync();
+            return movies;
         }
 
         public async Task<IEnumerable<Review>> GetMovieReviews(int id)
@@ -32,6 +36,4 @@ namespace Infrastructure.Repositories
             throw new System.NotImplementedException();
         }
     }
-
-   
 }
