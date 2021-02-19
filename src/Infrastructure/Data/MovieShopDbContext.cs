@@ -63,6 +63,8 @@ namespace Infrastructure.Data
             builder.Property(m => m.OriginalLanguage).HasMaxLength(64);
             builder.Property(m => m.Price).HasColumnType("decimal(5, 2)").HasDefaultValue(9.9m);
             builder.Property(m => m.CreatedDate).HasDefaultValueSql("getdate()");
+            builder.Ignore(m => m.Rating);
+
         }
 
         private void ConfigureCast(EntityTypeBuilder<Cast> builder)

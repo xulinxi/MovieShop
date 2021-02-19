@@ -18,7 +18,6 @@ namespace ApplicationCore.Helpers
         public int PageSize { get; }
         public int TotalPages { get; }
         public long Count { get; }
-
         public IEnumerable<TEntity> Data { get; }
     }
 }

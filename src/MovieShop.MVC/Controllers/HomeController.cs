@@ -21,8 +21,8 @@ namespace MovieShop.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var reviews = await _movieService.GetReviewsForMovie(3);
-            return View();
+            var topGrossingMovies = await _movieService.GetHighestGrossingMovies();
+            return View(topGrossingMovies);
         }
 
         public IActionResult Privacy()
