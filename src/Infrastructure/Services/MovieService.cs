@@ -72,6 +72,7 @@ namespace Infrastructure.Services
 
             var movies = await _genreRepository.GetPagedData(page, pageSize, null,
                 filterExpression, g => g.Movies);
+            var selectMovies = movies.SelectMany(m => m.Movies);
             return null;
         }
 
