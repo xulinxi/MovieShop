@@ -17,6 +17,10 @@ namespace ApplicationCore.Helpers
             AddRange(items);
         }
 
+        public PaginatedList()
+        {
+            
+        }
         public int PageIndex { get; }
         public int TotalPages { get; }
         public int TotalCount { get; }

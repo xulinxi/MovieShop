@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ApplicationCore.Entities;
+using ApplicationCore.Helpers;
 using ApplicationCore.Models;
 using AutoMapper;
 
@@ -48,6 +49,7 @@ namespace Infrastructure.Helpers
             CreateMap<PurchaseRequestModel, Purchase>();
             CreateMap<FavoriteRequestModel, Favorite>();
             CreateMap<ReviewRequestModel, Review>();
+
         }
 
         //private List<Genre> GetMovieGenres(IEnumerable<MovieGenre> srcGenres)
@@ -66,7 +68,6 @@ namespace Infrastructure.Helpers
             var reviewResponse = new ReviewResponseModel {MovieReviews = new List<ReviewMovieResponseModel>()};
 
             foreach (var review in reviews)
-            {
                 reviewResponse.MovieReviews.Add(new ReviewMovieResponseModel
                 {
                     MovieId = review.MovieId,
@@ -74,7 +75,6 @@ namespace Infrastructure.Helpers
                     UserId = review.UserId,
                     ReviewText = review.ReviewText
                 });
-            }
 
             return reviewResponse.MovieReviews;
         }

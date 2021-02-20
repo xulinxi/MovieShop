@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MovieShop.MVC.Models;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using ApplicationCore.ServiceInterfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using MovieShop.MVC.Models;
 
 namespace MovieShop.MVC.Controllers
 {
@@ -13,6 +11,7 @@ namespace MovieShop.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService _movieService;
+
         public HomeController(ILogger<HomeController> logger, IMovieService movieService)
         {
             _logger = logger;

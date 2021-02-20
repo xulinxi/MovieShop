@@ -15,12 +15,12 @@ namespace Infrastructure.Services
 {
     public class MovieService : IMovieService
     {
+        private readonly IAsyncRepository<Favorite> _favoriteRepository;
+        private readonly IAsyncRepository<Genre> _genreRepository;
         private readonly IMapper _mapper;
         private readonly IMovieRepository _movieRepository;
         private readonly IPurchaseRepository _purchaseRepository;
-        private readonly IAsyncRepository<Favorite> _favoriteRepository;
         private readonly IAsyncRepository<Review> _reviewRepository;
-        private readonly IAsyncRepository<Genre> _genreRepository;
 
         public MovieService(IMovieRepository movieRepository, IMapper mapper, IPurchaseRepository purchaseRepository,
             IAsyncRepository<Favorite> favoriteRepository, IAsyncRepository<Review> reviewRepository,
@@ -65,14 +65,12 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<PagedResultSet<MovieResponseModel>> GetMoviesByGenre(int genreId, int pageSize = 25, int page = 1)
+        public async Task<PaginatedList<MovieResponseModel>> GetMoviesByGenre(int genreId, int pageSize = 30,
+            int page = 1)
         {
             var pagedMovies = await _movieRepository.GetMoviesByGenre(genreId, pageSize, page);
-            var movies =
-                new PagedResultSet<MovieResponseModel>(_mapper.Map<List<MovieResponseModel>>(pagedMovies),
-                    pagedMovies.PageIndex,
-                    pageSize, pagedMovies.TotalCount);
-            return movies;
+            var data = _mapper.Map<PaginatedList<MovieResponseModel>>(pagedMovies);
+            return data;
         }
 
         public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)
