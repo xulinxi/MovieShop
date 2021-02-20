@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Entities;
 
 namespace ApplicationCore.Models
@@ -51,6 +52,7 @@ namespace ApplicationCore.Models
         public string Title { get; set; }
         public string PosterUrl { get; set; }
         public string BackdropUrl { get; set; }
+
         public decimal? Rating { get; set; }
         public string Overview { get; set; }
         public string Tagline { get; set; }
