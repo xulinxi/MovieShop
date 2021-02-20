@@ -70,7 +70,8 @@ namespace Infrastructure.Services
         {
             var pagedMovies = await _movieRepository.GetMoviesByGenre(genreId, pageSize, page);
             var data = _mapper.Map<PaginatedList<MovieResponseModel>>(pagedMovies);
-            return data;
+            var movies = new PaginatedList<MovieResponseModel>(data, pagedMovies.TotalCount, page, pageSize);
+            return movies;
         }
 
         public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)

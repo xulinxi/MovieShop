@@ -21,9 +21,9 @@ namespace MovieShop.MVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Genre(int id, int pageSize = 30, int page = 1)
+        public async Task<IActionResult> Genre(int id, int pageSize = 30, int pageNumber = 1)
         {
-            var movies = await _movieService.GetMoviesByGenre(id, pageSize, page);
+            var movies = await _movieService.GetMoviesByGenre(id, pageSize, pageNumber);
             return View("PagedIndex", movies);
         }
 
