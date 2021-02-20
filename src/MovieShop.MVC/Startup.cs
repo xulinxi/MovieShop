@@ -1,11 +1,13 @@
+using System;
+using Infrastructure.Data;
+using Infrastructure.Helpers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Infrastructure.Data;
-using Infrastructure.Helpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace MovieShop.MVC
 {
@@ -30,13 +32,19 @@ namespace MovieShop.MVC
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
 
+            //sets the default authentication scheme for the app
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.Cookie.Name = "MovieShopAuthCookie";
+                options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                options.LoginPath = "/Account/Login";
+            });
         }
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
             services.AddRepositories();
             services.AddServices();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,13 +66,20 @@ namespace MovieShop.MVC
 
             app.UseRouting();
 
+            //If the app uses authentication / authorization features such as AuthorizePage or[Authorize], place the call to UseAuthentication and UseAuthorization after UseRouting(and after UseCors if CORS Middleware is used).
+
+            //The trick (which is not mentioned in the migration guide) appears to be that
+            //UseAuthenticationUseAuthorization needs to be AFTER UseRouting but BEFORE UseEndpoints.
+
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

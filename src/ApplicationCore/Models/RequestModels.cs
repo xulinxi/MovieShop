@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Entities;
+using ApplicationCore.Helpers;
 
 namespace ApplicationCore.Models
 {
@@ -23,6 +24,11 @@ namespace ApplicationCore.Models
 
         [StringLength(50)]
         public string LastName { get; set; }
+
+        [DataType(DataType.Date)]
+        [YearValidation(1910)]
+        public DateTime DateOfBirth { get; set; }
+
     }
 
     public class UserProfileRequestModel
