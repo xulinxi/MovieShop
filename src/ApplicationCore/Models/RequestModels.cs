@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Entities;
-using ApplicationCore.Helpers;
+using ApplicationCore.Validations;
 
 namespace ApplicationCore.Models
 {
@@ -19,16 +19,14 @@ namespace ApplicationCore.Models
             "Password Should have minimum 8 with at least one upper, lower, number and special character")]
         public string Password { get; set; }
 
-        [StringLength(50)]
-        public string FirstName { get; set; }
+        [StringLength(50)] public string FirstName { get; set; }
 
-        [StringLength(50)]
-        public string LastName { get; set; }
+        [StringLength(50)] public string LastName { get; set; }
 
         [DataType(DataType.Date)]
-        [YearValidation(1910)]
+        [MaximumYear(1910)]
+        [MinimumAge(18)]
         public DateTime DateOfBirth { get; set; }
-
     }
 
     public class UserProfileRequestModel
@@ -52,36 +50,25 @@ namespace ApplicationCore.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(150)]
-        public string Title { get; set; }
+        [Required] [StringLength(150)] public string Title { get; set; }
 
-        [StringLength(2084)]
-        public string Overview { get; set; }
+        [StringLength(2084)] public string Overview { get; set; }
 
-        [StringLength(2084)]
-        public string Tagline { get; set; }
+        [StringLength(2084)] public string Tagline { get; set; }
 
         [Range(0, 5000000000)]
         [RegularExpression("^(\\d{1,18})(.\\d{1})?$")]
         public decimal? Revenue { get; set; }
 
-        [Range(0, 500000000)]
-        public decimal? Budget { get; set; }
+        [Range(0, 500000000)] public decimal? Budget { get; set; }
 
-        [Url]
-        public string ImdbUrl { get; set; }
+        [Url] public string ImdbUrl { get; set; }
 
-        [Url]
-        public string TmdbUrl { get; set; }
+        [Url] public string TmdbUrl { get; set; }
 
-        [Required]
-        [Url]
-        public string PosterUrl { get; set; }
+        [Required] [Url] public string PosterUrl { get; set; }
 
-        [Required]
-        [Url]
-        public string BackdropUrl { get; set; }
+        [Required] [Url] public string BackdropUrl { get; set; }
 
         public string OriginalLanguage { get; set; }
         public DateTime? ReleaseDate { get; set; }
