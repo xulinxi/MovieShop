@@ -42,7 +42,14 @@ namespace MovieShop.MVC.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated) return LocalRedirect("~/");
             return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login");
         }
 
         [HttpPost]

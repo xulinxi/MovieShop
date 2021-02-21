@@ -26,14 +26,18 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @await Component.InvokeAsync("Genres")
                     </div>
-
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </li>
-                <partial name="_LoginPartial"/>
             </ul>
         </div>
+        <div class="navbar-collapse collapse w-100 order-3">
+            <form class="form-inline mt-2 mt-md-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+
+        <partial name="_LoginPartial"/>
+
     </nav>
 </header>
 <div class="container-fluid mt-1">
