@@ -35,7 +35,7 @@ namespace MovieShop.MVC.Controllers
             if (!ModelState.IsValid) return View();
 
             var registeredUser = await _userService.CreateUser(registerModel);
-            
+
             return RedirectToAction("Login");
         }
 
