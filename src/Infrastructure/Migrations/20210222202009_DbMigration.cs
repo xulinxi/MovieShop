@@ -232,7 +232,8 @@ namespace Infrastructure.Migrations
                     MovieId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
-                    ReviewText = table.Column<string>(type: "nvarchar(max)", maxLength: 20000, nullable: true)
+                    ReviewText = table.Column<string>(type: "nvarchar(max)", maxLength: 20000, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -252,24 +253,24 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleUser",
+                name: "UserRole",
                 columns: table => new
                 {
-                    RolesId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
+                    table.PrimaryKey("PK_UserRole", x => new { x.RoleId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_RoleUser_Role_RolesId",
-                        column: x => x.RolesId,
+                        name: "FK_UserRole_Role_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoleUser_User_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_UserRole_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -312,11 +313,6 @@ namespace Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_UsersId",
-                table: "RoleUser",
-                column: "UsersId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Trailer_MovieId",
                 table: "Trailer",
                 column: "MovieId");
@@ -327,6 +323,11 @@ namespace Infrastructure.Migrations
                 column: "Email",
                 unique: true,
                 filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_UserId",
+                table: "UserRole",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -347,10 +348,10 @@ namespace Infrastructure.Migrations
                 name: "Review");
 
             migrationBuilder.DropTable(
-                name: "RoleUser");
+                name: "Trailer");
 
             migrationBuilder.DropTable(
-                name: "Trailer");
+                name: "UserRole");
 
             migrationBuilder.DropTable(
                 name: "Cast");
@@ -359,13 +360,13 @@ namespace Infrastructure.Migrations
                 name: "Genre");
 
             migrationBuilder.DropTable(
+                name: "Movie");
+
+            migrationBuilder.DropTable(
                 name: "Role");
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Movie");
         }
     }
 }

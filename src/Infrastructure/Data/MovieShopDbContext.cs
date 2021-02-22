@@ -32,6 +32,12 @@ namespace Infrastructure.Data
                     m => m.HasOne<Genre>().WithMany().HasForeignKey("GenreId"),
                     g => g.HasOne<Movie>().WithMany().HasForeignKey("MovieId"));
 
+
+            modelBuilder.Entity<User>().HasMany(u => u.Roles).WithMany(r => r.Users)
+                .UsingEntity<Dictionary<string, object>>("UserRole",
+                    u => u.HasOne<Role>().WithMany().HasForeignKey("RoleId"),
+                    r => r.HasOne<User>().WithMany().HasForeignKey("UserId"));
+
             modelBuilder.Entity<Cast>(ConfigureCast);
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
             modelBuilder.Entity<User>(ConfigureUser);
@@ -64,7 +70,6 @@ namespace Infrastructure.Data
             builder.Property(m => m.Price).HasColumnType("decimal(5, 2)").HasDefaultValue(9.9m);
             builder.Property(m => m.CreatedDate).HasDefaultValueSql("getdate()");
             builder.Ignore(m => m.Rating);
-
         }
 
         private void ConfigureCast(EntityTypeBuilder<Cast> builder)

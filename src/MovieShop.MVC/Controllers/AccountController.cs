@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ApplicationCore.Models;
@@ -73,6 +74,9 @@ namespace MovieShop.MVC.Controllers
                 new(ClaimTypes.Surname, user.LastName),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
+
+           if (user.Roles != null) claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
+
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Entities;
 
 namespace ApplicationCore.Models
@@ -24,7 +23,13 @@ namespace ApplicationCore.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public IList<string> Roles { get; set; }
+        public List<RoleModel> Roles { get; set; }
+    }
+
+    public class RoleModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class PurchaseResponseModel

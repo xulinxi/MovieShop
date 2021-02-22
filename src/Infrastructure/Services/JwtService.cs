@@ -29,7 +29,7 @@ namespace Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
-            if (user.Roles != null) claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            if (user.Roles != null) claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name)));
 
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);
