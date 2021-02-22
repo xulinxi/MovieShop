@@ -71,10 +71,14 @@ namespace ApplicationCore.Models
         [Required] [Url] public string BackdropUrl { get; set; }
 
         public string OriginalLanguage { get; set; }
+
+        [MaximumYear(1910)]
         public DateTime? ReleaseDate { get; set; }
         public int? RunTime { get; set; }
+
+        [Range(.99, 49)]
         public decimal? Price { get; set; }
-        public List<Genre> Genres { get; set; }
+        public List<GenreModel> Genres { get; set; }
     }
 
     public class LoginRequestModel

@@ -42,6 +42,7 @@ namespace Infrastructure.Helpers
 
             CreateMap<User, UserLoginResponseModel>();
             CreateMap<Role, RoleModel>();
+            CreateMap<Genre, GenreModel>();
 
             CreateMap<MovieCreateRequest, Movie>();
             //.ForMember( m => m.MovieGenres, opt => opt.MapFrom( src => GetMovieGenres(src.Genres)));

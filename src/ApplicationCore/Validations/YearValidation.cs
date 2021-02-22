@@ -14,7 +14,7 @@ namespace ApplicationCore.Validations
 
         public string GetErrorMessage()
         {
-            return $"year should be no later than {Year}.";
+            return $"year should be no less than {Year}.";
         }
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

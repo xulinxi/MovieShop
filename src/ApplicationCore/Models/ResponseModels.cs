@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ApplicationCore.Entities;
 
 namespace ApplicationCore.Models
 {
@@ -70,7 +69,7 @@ namespace ApplicationCore.Models
         public decimal? Price { get; set; }
         public int FavoritesCount { get; set; }
         public List<CastResponseModel> Casts { get; set; }
-        public List<Genre> Genres { get; set; }
+        public List<GenreModel> Genres { get; set; }
 
         public class CastResponseModel
         {
@@ -81,6 +80,12 @@ namespace ApplicationCore.Models
             public string ProfilePath { get; set; }
             public string Character { get; set; }
         }
+    }
+
+    public class GenreModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class MovieChartResponseModel
