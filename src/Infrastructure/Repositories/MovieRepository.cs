@@ -26,9 +26,15 @@ namespace Infrastructure.Repositories
             var totalMoviesCountByGenre =
                 await _dbContext.Genres.Include(g => g.Movies).Where(g => g.Id == genreId).SelectMany(g => g.Movies)
                     .CountAsync();
+
+            if (totalMoviesCountByGenre == 0)
+            {
+                throw new NotFoundException("NO Movies found for this genre");
+            }
             var movies = await _dbContext.Genres.Include(g => g.Movies).Where(g => g.Id == genreId)
                 .SelectMany(g => g.Movies)
-                .OrderByDescending(m => m.Revenue).Skip((page - 1) * 1).Take(pageSize).ToListAsync();
+                .OrderByDescending(m => m.Revenue).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
             return new PaginatedList<Movie>(movies, totalMoviesCountByGenre, page, pageSize);
         }
 
