@@ -13,7 +13,7 @@ namespace ApplicationCore.ServiceInterfaces
         string RemoteIpAddress { get; }
         IEnumerable<Claim> GetClaimsIdentity();
         IEnumerable<string> Roles { get; }
-        public string ProfilePictureUrl { get; set; }
+        string ProfilePictureUrl { get; set; }
         bool IsAdmin { get; }
         bool IsSuperAdmin { get; }
     }
