@@ -57,11 +57,12 @@
 
 @await RenderSectionAsync("Scripts", false)
 <script>
-    $('form').one('submit',
-        function() {
-            $(this).find('button[type="submit"]').attr('disabled', 'disabled')
-                .append('  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
-        });
+    //$('form').one('submit',
+    //    function () {
+    //        console.log($('form').valid());
+    //        $(this).find('button[type="submit"]').attr('disabled', 'disabled')
+    //            .append('  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+    //    });
 </script>
 </body>
 </html>

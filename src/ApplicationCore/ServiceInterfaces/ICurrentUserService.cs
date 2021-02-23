@@ -14,5 +14,7 @@ namespace ApplicationCore.ServiceInterfaces
         IEnumerable<Claim> GetClaimsIdentity();
         IEnumerable<string> Roles { get; }
         public string ProfilePictureUrl { get; set; }
+        bool IsAdmin { get; }
+        bool IsSuperAdmin { get; }
     }
 }

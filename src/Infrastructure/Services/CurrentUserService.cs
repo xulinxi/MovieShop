@@ -20,40 +20,57 @@ namespace Infrastructure.Services
 
         public int? UserId => GetUserId();
         public bool IsAuthenticated => GetAuthenticated();
-        public string UserName => _httpContextAccessor.HttpContext.User.Identity.Name;
+        public string UserName => _httpContextAccessor.HttpContext?.User.Identity?.Name;
 
-        public string FullName => _httpContextAccessor.HttpContext.User.Claims
+        public string FullName => _httpContextAccessor.HttpContext?.User.Claims
             .FirstOrDefault(c => c.Type == ClaimTypes.GivenName)
-            ?.Value + " " + _httpContextAccessor.HttpContext.User.Claims
+            ?.Value + " " + _httpContextAccessor.HttpContext?.User.Claims
             .FirstOrDefault(c =>
                 c.Type ==
                 ClaimTypes
                     .Surname)
             ?.Value;
 
-        public string Email => _httpContextAccessor.HttpContext.User.Claims
+        public string Email => _httpContextAccessor.HttpContext?.User.Claims
             .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
-        public string RemoteIpAddress => _httpContextAccessor.HttpContext.Connection?.RemoteIpAddress.ToString();
+        public string RemoteIpAddress => _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {
-            return _httpContextAccessor.HttpContext.User.Claims;
+            return _httpContextAccessor.HttpContext?.User.Claims;
         }
 
         public IEnumerable<string> Roles => GetRoles();
         public string ProfilePictureUrl { get; set; }
+        public bool IsAdmin => GetIsAdmin();
+
+        public bool IsSuperAdmin => GetIsSuperAdmin();
+
+        private bool GetIsAdmin()
+        {
+            var roles = Roles;
+            return roles.Any(r => r.Contains("Admin"));
+        }
+
+        private bool GetIsSuperAdmin()
+        {
+            var roles = Roles;
+            return roles.Any(r => r.Contains("SuperAdmin"));
+        }
 
         private int? GetUserId()
         {
             var userId =
-                Convert.ToInt32(_httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value);
+                Convert.ToInt32(_httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             return userId;
         }
 
         private bool GetAuthenticated()
         {
-            return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+            return _httpContextAccessor.HttpContext?.User.Identity != null &&
+                   _httpContextAccessor.HttpContext != null &&
+                   _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
         }
 
         private string GetName()

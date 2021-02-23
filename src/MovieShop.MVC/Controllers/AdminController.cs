@@ -38,5 +38,10 @@ namespace MovieShop.MVC.Controllers
             var createdMovie = await _movieService.CreateMovie(movieCreateRequest);
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> CreateCast()
+        {
+            return View();
+        }
     }
 }

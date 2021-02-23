@@ -73,6 +73,7 @@ namespace ApplicationCore.Models
         public string OriginalLanguage { get; set; }
 
         [MaximumYear(1910)]
+        [DataType(DataType.Date)]
         public DateTime? ReleaseDate { get; set; }
         public int? RunTime { get; set; }
 
