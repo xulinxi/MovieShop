@@ -1,7 +1,7 @@
-﻿@using System.Globalization
+﻿@inject ICurrentUserService UserService
+@using System.Globalization
 @using ApplicationCore.ServiceInterfaces
 @model ApplicationCore.Models.MovieDetailsResponseModel
-@inject ICurrentUserService UserService
 <div class="bg-image" style="background-image: url(@Model.BackdropUrl)">
 
     <div class="row">
@@ -77,13 +77,13 @@
                 </li>
 
                 <li class="list-group-item">
-                    <button type="button" class="btn btn-light btn-lg btn-block btn-sm" data-toggle="modal" data-target="#buyMovieModal">
+                    <a class="btn btn-light btn-lg btn-block btn-sm" asp-route-id="@Model.Id" asp-controller="User" asp-action="BuyMovie">
                         BUY @Model.Price
-                    </button>
+                    </a>
 
-                    <button type="button" class="btn btn-light btn-lg btn-block btn-sm">
+                    <a class="btn btn-light btn-lg btn-block btn-sm" asp-route-id="@Model.Id" asp-controller="User" asp-action="BuyMovie">
                         WATCH MOVIE
-                    </button>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -163,35 +163,3 @@
     </div>
 </div>
 
-
-<!-- Modal -->
-<form method="post" asp-controller="User" asp-action="CreatePurchase">
-    <div class="modal fade" id="buyMovieModal" tabindex="-1" role="dialog" aria-labelledby="buyMovieModal" aria-hidden="true">
-
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <p>Are you sure you wanna buy</p>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title" id="exampleModalLabel">@Model.Title which is $@Model.Price </h5>
-                </div>
-                <input type="hidden" value="@Model.Id" name="MovieId"/>
-
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <input type="hidden" value="@UserService.UserId" name="UserId"/>
-                }
-
-                <div class="modal-footer">
-                    <input type="submit" value="YES" class="btn btn-primary"/>
-                    <input type="button" class="btn btn-outline-dark" data-dismiss="modal" value="NO"/>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
