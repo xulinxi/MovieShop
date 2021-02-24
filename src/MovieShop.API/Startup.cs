@@ -1,5 +1,8 @@
+using Infrastructure.Data;
+using Infrastructure.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,8 +28,20 @@ namespace MovieShop.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieShop.API", Version = "v1" });
             });
+            services.AddDbContext<MovieShopDbContext>(options =>
+                options.UseSqlServer(Configuration
+                    .GetConnectionString("MovieShopDbConnection")));
+            services.AddAutoMapper(typeof(Startup), typeof(MovieShopMappingProfile));
+            ConfigureDependencyInjection(services);
+            services.AddMemoryCache();
+            services.AddHttpContextAccessor();
         }
 
+        private void ConfigureDependencyInjection(IServiceCollection services)
+        {
+            services.AddRepositories();
+            services.AddServices();
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
