@@ -1,4 +1,5 @@
 using Infrastructure.Data;
+using Infrastructure.Filters;
 using Infrastructure.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,11 +23,17 @@ namespace MovieShop.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<MovieShopLogFilter>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(new MovieShopHeader("Company", "Movie Shop Inc."));
+                options.Filters.Add(typeof(MovieShopLogFilter)); // By type
+            });
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieShop.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "MovieShop.API", Version = "v1"});
             });
             services.AddDbContext<MovieShopDbContext>(options =>
                 options.UseSqlServer(Configuration
@@ -42,6 +49,7 @@ namespace MovieShop.API
             services.AddRepositories();
             services.AddServices();
         }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -58,10 +66,7 @@ namespace MovieShop.API
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

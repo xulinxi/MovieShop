@@ -34,7 +34,7 @@ namespace Infrastructure.Services
         public string Email => _httpContextAccessor.HttpContext?.User.Claims
             .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
-        public string RemoteIpAddress => _httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
+        public string RemoteIpAddress => GetRemoteAddress();
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {
@@ -46,6 +46,11 @@ namespace Infrastructure.Services
         public bool IsAdmin => GetIsAdmin();
 
         public bool IsSuperAdmin => GetIsSuperAdmin();
+
+        private string GetRemoteAddress()
+        {
+            return _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+        }
 
         private bool GetIsAdmin()
         {

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ApplicationCore.ServiceInterfaces;
+using Infrastructure.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MovieShop.API.Controllers
