@@ -1,6 +1,9 @@
 using System;
+using ApplicationCore.ServiceInterfaces;
+using Azure.Storage.Blobs;
 using Infrastructure.Data;
 using Infrastructure.Helpers;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,6 +46,11 @@ namespace MovieShop.MVC
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
+            var connectionString = Configuration.GetValue<string>("AzureBlobStorage");
+            var containerName = Configuration.GetValue<string>("MovieShopBlobContainer");
+            services.AddTransient<IBlobService>(b =>
+                new BlobService(new BlobServiceClient(connectionString), containerName));
+
             services.AddRepositories();
             services.AddServices();
         }
@@ -60,7 +68,7 @@ namespace MovieShop.MVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

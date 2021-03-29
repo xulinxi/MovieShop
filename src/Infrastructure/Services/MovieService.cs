@@ -13,6 +13,7 @@ using AutoMapper;
 
 namespace Infrastructure.Services
 {
+   
     public class MovieService : IMovieService
     {
         private readonly IAsyncRepository<Favorite> _favoriteRepository;
@@ -111,9 +112,12 @@ namespace Infrastructure.Services
         public async Task<IEnumerable<MovieResponseModel>> GetHighestGrossingMovies()
         {
             var movies = await _movieRepository.GetHighestGrossingMovies();
+          var test =  movies.Where(e => e.Budget == 22);
             var response = _mapper.Map<IEnumerable<MovieResponseModel>>(movies);
             return response;
         }
+
+       
 
         //public async Task<IEnumerable<MovieResponseModel>> GetMoviesByGenre(int genreId)
         //{
