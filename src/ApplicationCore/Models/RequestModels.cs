@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Entities;
 using ApplicationCore.Validations;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationCore.Models
 {
@@ -33,9 +34,8 @@ namespace ApplicationCore.Models
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-
         public string ProfilePictureUrl { get; set; }
-        // public IFormFile File { get; set; }
+        public IFormFile File { get; set; }
     }
 
     public class ReviewRequestModel

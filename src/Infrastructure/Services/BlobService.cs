@@ -10,12 +10,11 @@ namespace Infrastructure.Services
     public class BlobService : IBlobService
     {
         private readonly BlobServiceClient _blobServiceClient;
-        private readonly string _containerName = "imagescontainer";
+        public string ContainerName { get; set; }
 
-        public BlobService(BlobServiceClient blobServiceClient, string containerName)
+        public BlobService(BlobServiceClient blobServiceClient)
         {
             _blobServiceClient = blobServiceClient;
-            _containerName = containerName;
         }
 
         public async Task<Uri> UploadFileBlobAsync(Stream content, string contentType, string fileName)
@@ -33,6 +32,7 @@ namespace Infrastructure.Services
             return await cloudBlockBlob.ExistsAsync();
         }
 
+
         private async Task<BlobContainerClient> GetContainerAsync(string containerName)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
@@ -42,7 +42,7 @@ namespace Infrastructure.Services
 
         private async Task<BlobContainerClient> GetMovieShopContainerAsync()
         {
-            return await GetContainerAsync(_containerName);
+            return await GetContainerAsync(ContainerName);
         }
     }
 }

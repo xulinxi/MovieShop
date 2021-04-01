@@ -47,9 +47,9 @@ namespace MovieShop.MVC
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
             var connectionString = Configuration.GetValue<string>("AzureBlobStorage");
-            var containerName = Configuration.GetValue<string>("MovieShopBlobContainer");
+           // var containerName = Configuration.GetValue<string>("MovieShopBlobContainer");
             services.AddTransient<IBlobService>(b =>
-                new BlobService(new BlobServiceClient(connectionString), containerName));
+                new BlobService(new BlobServiceClient(connectionString)));
 
             services.AddRepositories();
             services.AddServices();

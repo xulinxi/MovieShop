@@ -22,11 +22,12 @@ namespace Infrastructure.Services
         private readonly IAsyncRepository<Purchase> _purchaseRepository;
         private readonly IAsyncRepository<Review> _reviewRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IBlobService _blobService;
 
         public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper,
             IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService,
             IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository,
-            IAsyncRepository<Review> reviewRepository)
+            IAsyncRepository<Review> reviewRepository, IBlobService blobService)
         {
             _encryptionService = encryptionService;
             _userRepository = userRepository;
@@ -36,6 +37,7 @@ namespace Infrastructure.Services
             _movieService = movieService;
             _purchaseRepository = purchaseRepository;
             _reviewRepository = reviewRepository;
+            _blobService = blobService;
         }
 
         public async Task<UserLoginResponseModel> ValidateUser(string email, string password)
@@ -44,7 +46,7 @@ namespace Infrastructure.Services
             if (user == null) return null;
             var hashedPassword = _encryptionService.HashPassword(password, user.Salt);
             var isSuccess = user.HashedPassword == hashedPassword;
-           
+
             var response = _mapper.Map<UserLoginResponseModel>(user);
 
             //var roles = userRoles.FirstOrDefault()?.Roles;
@@ -99,13 +101,12 @@ namespace Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Uri> UploadUserProfilePicture(
-            UserProfileRequestModel userProfileRequestModel)
+        public async Task<Uri> UploadUserProfilePicture(UserProfileRequestModel userProfileRequestModel)
         {
-            //var result = await _blobService.UploadFileBlobAsync(userProfileRequestModel.File.OpenReadStream(),
-            //    userProfileRequestModel.File.ContentType, userProfileRequestModel.File.FileName);
-            //return result;
-            throw new NotImplementedException();
+            _blobService.ContainerName = "userimagescontainer";
+            var result = await _blobService.UploadFileBlobAsync(userProfileRequestModel.File.OpenReadStream(),
+                userProfileRequestModel.File.ContentType, userProfileRequestModel.File.FileName);
+            return result;
         }
 
         public async Task AddFavorite(FavoriteRequestModel favoriteRequest)

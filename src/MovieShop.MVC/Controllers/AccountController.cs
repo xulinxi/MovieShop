@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ApplicationCore.Entities;
 using ApplicationCore.Models;
 using ApplicationCore.ServiceInterfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -27,6 +29,27 @@ namespace MovieShop.MVC.Controllers
 
         public IActionResult Register()
         {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile profileImage)
+        {
+            var userProfile = new UserProfileRequestModel()
+            {
+                Id = _currentUserService.UserId.Value,
+                FullName = _currentUserService.FullName,
+                File = profileImage
+            };
+
+            var response = _userService.UploadUserProfilePicture(userProfile);
+
             return View();
         }
 
